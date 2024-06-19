@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Course Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+       
+        body {
+          background-color:rgb(250, 248, 250);
+        }
+        .main-container {
+            background: rgba(153, 145, 145, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(186, 12, 12, 0.2);
+            margin-top: 50px;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .list-group-item {
+            background-color: #f8fafb;
+        }
+
+        /* Add Animation Toggle Effect */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        #add_btn1 {
+          color: white;
+          background-color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <main>
+        <div class="container mt-5 col-6 main-container">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Chapter Name" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                <button id="add_btn1" class="btn btn-outline-success" type="button">Add</button>
+            </div>
+            <ul id="parentList" class="list-group">
+                <li class="list-group-item d-flex justify-content-between">
+                    <h5 class="flex-grow-1">Chapter 1</h5>
+                    <button id="edit_btn" class="btn btn-warning mx-1" onclick="editChapter(this)">Edit</button>
+                    <button id="remo_btn" class="btn btn-danger text-center" onclick="removeChapter(this)">Remove</button>
+                </li>
+            </ul>
+        </div>
+    </main>
+    <script>
+        let addbutton = document.getElementById("add_btn1");
+        addbutton.addEventListener("click", addChapter);
+        let parentList = document.getElementById("parentList");
+
+        function addChapter(e) {
+            if (parentList.children[0] && parentList.children[0].className == "EmptyMesg") {
+                parentList.children[0].remove();
+            }
+            let currentbtn = e.currentTarget;
+            let currentInput = currentbtn.previousElementSibling;
+            let currentName = currentInput.value;
+
+            let newLi = document.createElement("li");
+            newLi.className = "list-group-item d-flex justify-content-between fade-in"; // Add fade-in class for animation
+            newLi.innerHTML = `<h5 class="flex-grow-1">${currentName}</h5> 
+                <button class="btn btn-warning mx-1" onclick="editChapter(this)">Edit</button>
+                <button class="btn btn-danger" onclick="removeChapter(this)">Remove</button>`;
+
+            parentList.appendChild(newLi);
+            currentInput.value = '';
+        }
+
+        function removeChapter(currElement) {
+            currElement.parentElement.classList.add("fade-out"); // Add fade-out class for animation
+            setTimeout(() => {
+                currElement.parentElement.remove();
+                if (parentList.children.length <= 0) {
+                    let newEle = document.createElement("h5");
+                    newEle.classList.add("EmptyMesg");
+                    newEle.textContent = "Nothing is here, please add a chapter.";
+                    parentList.appendChild(newEle);
+                }
+            }, 500); // Wait for fade-out animation to complete before removing the element
+        }
+
+        function editChapter(curr_edit) {
+            if (curr_edit.textContent == "Done") {
+                curr_edit.textContent = "Edit";
+                let curr_name = curr_edit.previousElementSibling.value;
+                let curr_heading = document.createElement("h5");
+                curr_heading.className = "flex-grow-1";
+                curr_heading.textContent = curr_name;
+                curr_edit.parentElement.replaceChild(curr_heading, curr_edit.previousElementSibling);
+            } else {
+                curr_edit.textContent = "Done";
+                let curr_name = curr_edit.previousElementSibling.textContent;
+                let curr_input = document.createElement("input");
+                curr_input.type = "text";
+                curr_input.placeholder = "Chapter Name";
+                curr_input.className = "form-control";
+                curr_input.value = curr_name;
+                curr_edit.parentElement.replaceChild(curr_input, curr_edit.previousElementSibling);
+            }
+        }
+    </script>
+</body>
+
+</html>
