@@ -20,6 +20,7 @@ You can see a live demo [here](https://example.com).
 
 ### Steps
 1. Clone the repository:
+```bash
 git clone https://github.com/yourusername/chapter-crud-operations.git
 cd chapter-crud-operations
   
